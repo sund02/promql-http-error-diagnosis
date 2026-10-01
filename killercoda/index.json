@@ -1,0 +1,48 @@
+{
+  "title": "Diagnosing HTTP Service Errors with Prometheus and PromQL",
+  "description": "Use PromQL error ratios to detect and localize an HTTP 500 incident on an instrumented service.",
+  "details": {
+    "intro": {
+      "text": "intro.md",
+      "background": "background.sh",
+      "foreground": "foreground.sh"
+    },
+    "steps": [
+      {
+        "title": "Start the environment and verify scraping",
+        "text": "step1.md",
+        "verify": "step1/verify.sh"
+      },
+      {
+        "title": "Observe healthy traffic",
+        "text": "step2.md",
+        "verify": "step2/verify.sh"
+      },
+      {
+        "title": "Inject a failure",
+        "text": "step3.md",
+        "verify": "step3/verify.sh"
+      },
+      {
+        "title": "Localize the failure with error ratios",
+        "text": "step4.md",
+        "verify": "step4/verify.sh"
+      },
+      {
+        "title": "Recover and watch the error ratio drop",
+        "text": "step5.md",
+        "verify": "step5/verify.sh"
+      },
+      {
+        "title": "Reflect on what metrics can and cannot tell you",
+        "text": "step6.md"
+      }
+    ],
+    "finish": {
+      "text": "finish.md"
+    }
+  },
+  "backend": {
+    "imageid": "ubuntu"
+  }
+}
