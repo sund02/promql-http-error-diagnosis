@@ -4,7 +4,15 @@ An executable tutorial. You run a small instrumented HTTP service, break one of
 its endpoints, and use PromQL error-ratio queries to find which endpoint is
 failing. It runs as a guided Killercoda scenario in about 20 to 30 minutes, or
 locally with Docker Compose.
+
 ![Architecture](docs/architecture.svg)
+
+## Run it on Killercoda
+
+**[Start the tutorial on Killercoda](https://killercoda.com/sund02/course/killercoda)**
+
+You only need a free Killercoda account. The environment starts by itself and
+each step has a Check button that verifies your progress.
 
 ## Run locally
 
@@ -64,6 +72,31 @@ sum by (endpoint) (rate(http_requests_total{status=~"5.."}[1m]))
 sum by (endpoint) (rate(http_requests_total[1m]))
 ```
 
+## Validation
+
+The scenario was run end to end in a fresh Killercoda session on
+2026-10-02, and the check for every step passed. The same sequence also passes
+locally with `docker compose` and the verify scripts.
+
+Overall error ratio during the incident: about 0.2, which looks survivable.
+
+![Overall error ratio](docs/screenshots/step4-overall-error-ratio.png)
+
+The same data grouped by endpoint: `/payments` fails every request.
+
+![Error ratio by endpoint](docs/screenshots/step4-error-ratio-by-endpoint.png)
+
+Over time, `/payments` rises to 1 and falls back while `/orders` stays at 0.
+
+![Error ratio by endpoint over time](docs/screenshots/step4-error-ratio-with-zero-fill-graph.png)
+
+After recovery the 1-minute ratio returns to 0 within about a minute.
+
+![Recovery](docs/screenshots/step5-error-ratio-recovery-graph.png)
+
+All screenshots, one or more per step, are in
+[docs/screenshots](docs/screenshots).
+
 ## Repository layout
 
 ```
@@ -71,7 +104,7 @@ app/                 instrumented Flask service and Dockerfile
 trafficgen/          background traffic generator and Dockerfile
 prometheus/          prometheus.yml scrape config
 killercoda/          Killercoda scenario (promql-http-errors/): steps and verify scripts
-docs/                architecture diagram and tutorial narrative
+docs/                architecture diagram, tutorial narrative, screenshots
 docker-compose.yml   starts app, trafficgen and prometheus together
 ```
 
