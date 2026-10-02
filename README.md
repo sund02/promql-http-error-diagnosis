@@ -70,7 +70,7 @@ sum by (endpoint) (rate(http_requests_total[1m]))
 app/                 instrumented Flask service and Dockerfile
 trafficgen/          background traffic generator and Dockerfile
 prometheus/          prometheus.yml scrape config
-killercoda/          scenario definition, step pages and verify scripts
+killercoda/          Killercoda scenario (promql-http-errors/): steps and verify scripts
 docs/                architecture diagram and tutorial narrative
 docker-compose.yml   starts app, trafficgen and prometheus together
 ```
