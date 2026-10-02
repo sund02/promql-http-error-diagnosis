@@ -90,8 +90,13 @@ where the root cause is usually found.
 - **Bounded labels (sustainable monitoring):** only `endpoint` and `status`,
   so the number of series and the cost of queries stay predictable as traffic
   grows.
-- **Prometheus:** collection and querying in one free tool. Because it pulls
-  metrics, it also records through `up` when a target stops answering.
+- **Prometheus:** collection and querying in one free, open-source tool.
+  Because it pulls metrics, it also records through `up` when a target stops
+  answering. It is a CNCF graduated project and the usual metrics system in
+  Kubernetes setups. A hosted service such as Datadog would need an account
+  and an API key, which this tutorial avoids. A log stack such as ELK is built
+  for searching individual events, not for computing rates and ratios over
+  time.
 - **Scripted failure injection:** the incident can be rehearsed safely and
   repeated exactly, so diagnosis can be practiced before it is needed in
   production.
