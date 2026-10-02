@@ -1,9 +1,11 @@
 # Diagnosing HTTP Service Errors with Prometheus and PromQL
 
-An executable tutorial. You run a small instrumented HTTP service, break one of
-its endpoints, and use PromQL error-ratio queries to find which endpoint is
+In this executable tutorial you run a small instrumented HTTP service, break one
+of its endpoints, and use PromQL error-ratio queries to find which endpoint is
 failing. It runs as a guided Killercoda scenario in about 20 to 30 minutes, or
 locally with Docker Compose.
+
+Authors: Jafar and Elena Pan.
 
 ![Architecture](docs/architecture.svg)
 
@@ -14,6 +16,23 @@ locally with Docker Compose.
 You only need a free Killercoda account. The environment starts by itself and
 each step has a Check button that verifies your progress.
 
+## Tutorial steps
+
+| Step | What you do |
+|---|---|
+| 1 | Start the environment and confirm Prometheus is scraping the app |
+| 2 | Query the request counters, then turn them into rates per endpoint (about 8 and 2 req/s) |
+| 3 | Make `/payments` return HTTP 500 while `/metrics` stays healthy |
+| 4 | Compute the overall error ratio (about 0.2), then group by endpoint to find `/payments` at 1 |
+| 5 | Recover and watch the ratio return to 0 as the query window moves past the incident |
+| 6 | Reflect on aggregation, low traffic, observation delay, and metrics vs logs and traces |
+
+## Background and design decisions
+
+[docs/tutorial.md](docs/tutorial.md) describes the system architecture, the
+design decisions behind it, and where the approach applies and where it falls
+short.
+
 ## Run locally
 
 Requires Docker with the Compose plugin.
@@ -23,7 +42,7 @@ docker compose up -d --build
 ```
 
 Then open the Prometheus UI at <http://localhost:9090> and check
-**Status → Targets**: the `app` target should be `UP` within about 10 seconds.
+**Status → Targets**: the `app` target should be `UP` within about 30 seconds.
 
 Stop and remove everything:
 

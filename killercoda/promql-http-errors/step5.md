@@ -52,6 +52,9 @@ Expected result: the `/payments` ratio falls gradually from about `1` or
 the result as `0` because the `status="500"` series still exists but has
 stopped increasing.
 
+Press **Check** once the ratio shows `0`. Pressed earlier, the check fails
+because the failures are still inside the 1-minute window.
+
 Open the **Graph** tab and select a 10-minute range. The incident appears as a
 plateau followed by a ramp down.
 
@@ -70,31 +73,23 @@ more of the incident in its window.
 
 ## 5. Confirm the failure counter stopped
 
-Run the metric check once:
+Read the failure counter twice, five seconds apart:
 
 ```
-curl -s localhost:8000/metrics | grep 'status="500"'
-```{{exec}}
-
-Expected result: the output includes the `/payments` series and its current
-counter value.
-
-Wait a few seconds:
-
-```
+curl -s localhost:8000/metrics | grep '^http_requests_total{.*status="500"'
 sleep 5
+curl -s localhost:8000/metrics | grep '^http_requests_total{.*status="500"'
 ```{{exec}}
 
-Expected result: the command produces no output.
-
-Run the same metric check again:
+Expected output (your count will differ, but both lines show the same value):
 
 ```
-curl -s localhost:8000/metrics | grep 'status="500"'
-```{{exec}}
+http_requests_total{endpoint="/payments",status="500"} 300.0
+http_requests_total{endpoint="/payments",status="500"} 300.0
+```
 
-Expected result: the failure counter has the same value as before. Healthy
-traffic continues, but no new failed request increments that counter.
+Healthy traffic continues, but no failed request increments the counter any
+more.
 
 ## Why the ratio lags behind the fix
 
