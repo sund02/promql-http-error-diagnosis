@@ -58,5 +58,7 @@ Every query in this tutorial depends on Prometheus scraping the app every
 5 seconds. Prometheus records the `up` series itself on each scrape: `1` when
 it reached `/metrics`, `0` when it could not. If the target were down, later
 queries would return no data at all, and an empty result is easy to misread as
-"no errors". Once `up` is 1, an empty result in a later step means the event
-did not happen, because the data is being collected.
+"no errors". Once `up` is 1 you know the data is being collected. In this
+tutorial an empty result then usually means the event has not happened, but a
+mistyped label or a query window with too few samples can also return nothing.
+Check the query before drawing conclusions.

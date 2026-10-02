@@ -79,8 +79,9 @@ where the root cause is usually found.
 ## Design decisions and the DevOps practices behind them
 
 - **Containers and a Compose file (infrastructure as code, reproducibility):**
-  the environment lives in versioned files with pinned image and package
-  versions, so it starts identically in Killercoda and on a laptop.
+  the environment lives in versioned files that pin the Python base image,
+  the Prometheus image and the direct Python dependencies, so it starts the
+  same way in Killercoda and on a laptop.
 - **Instrumentation inside the app (observability):** the service reports its
   own request counts and latency, so a failure that leaves the process running
   is still visible.
