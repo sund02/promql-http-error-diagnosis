@@ -37,4 +37,5 @@ tutorial leaves alerting out so the focus stays on reading the metrics.
 - [Query functions, including `rate()` and `histogram_quantile()`](https://prometheus.io/docs/prometheus/latest/querying/functions/)
 - [Histograms and summaries](https://prometheus.io/docs/practices/histograms/)
 - [Alerting rules](https://prometheus.io/docs/prometheus/latest/configuration/alerting_rules/)
+- [Architecture and design decisions](https://github.com/sund02/promql-http-error-diagnosis/blob/main/docs/tutorial.md)
 - [Source code for this tutorial](https://github.com/sund02/promql-http-error-diagnosis)
