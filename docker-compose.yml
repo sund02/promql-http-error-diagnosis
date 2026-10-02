@@ -1,0 +1,39 @@
+name: promql-tutorial
+
+services:
+  app:
+    build: ./app
+    ports:
+      - "8000:8000"
+    environment:
+      FAIL_ENDPOINT: /payments
+      FAIL_RATE: "1.0"
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000/metrics', timeout=2)"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+      start_period: 5s
+    restart: unless-stopped
+
+  trafficgen:
+    build: ./trafficgen
+    environment:
+      APP_URL: http://app:8000
+      ORDERS_RPS: "8"
+      PAYMENTS_RPS: "2"
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.54.1
+    ports:
+      - "9090:9090"
+    volumes:
+      - ./prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
