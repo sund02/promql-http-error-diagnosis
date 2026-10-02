@@ -4,6 +4,7 @@ An executable tutorial. You run a small instrumented HTTP service, break one of
 its endpoints, and use PromQL error-ratio queries to find which endpoint is
 failing. It runs as a guided Killercoda scenario in about 20 to 30 minutes, or
 locally with Docker Compose.
+![Architecture](docs/architecture.svg)
 
 ## Run locally
 
