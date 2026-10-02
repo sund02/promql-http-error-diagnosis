@@ -1,7 +1,8 @@
 #!/bin/bash
 : '
-Passes when failure injection is disabled and no per-endpoint error ratio is
-greater than zero in the one-minute query window.
+Passes when failure injection is disabled and Prometheus returns at least one
+per-endpoint error ratio, with every ratio exactly zero in the one-minute
+window. An empty result or NaN (no traffic) fails the check.
 '
 set -uo pipefail
 
@@ -12,6 +13,6 @@ QUERY='sum by (endpoint) (rate(http_requests_total{status=~"5.."}[1m])) / sum by
 curl -sfG http://localhost:9090/api/v1/query --data-urlencode "query=${QUERY}" \
   | python3 -c '
 import json, sys
-result = json.load(sys.stdin)["data"]["result"]
-sys.exit(1 if any(float(series["value"][1]) > 0 for series in result) else 0)
+values = [float(series["value"][1]) for series in json.load(sys.stdin)["data"]["result"]]
+sys.exit(0 if values and all(value == 0 for value in values) else 1)
 '

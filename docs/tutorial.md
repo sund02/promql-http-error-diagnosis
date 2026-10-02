@@ -49,9 +49,10 @@ are not counted.
 
 ### Reproducible containers and controls
 
-The container setup uses pinned versions, while scripted traffic and failure
-controls reproduce the same environment and incident. One
-`docker compose up -d --build` command starts it locally and in Killercoda.
+The container setup pins the Python base image, the Prometheus image and the
+direct Python dependencies, while scripted traffic and failure controls
+reproduce the same environment and incident. One `docker compose up -d --build`
+command starts it locally and in Killercoda.
 
 ### Fast feedback windows
 
