@@ -76,6 +76,41 @@ where the root cause is usually found.
 
 </details>
 
+## Design decisions and the DevOps practices behind them
+
+- **Containers and a Compose file (infrastructure as code, reproducibility):**
+  the environment lives in versioned files with pinned image and package
+  versions, so it starts identically in Killercoda and on a laptop.
+- **Instrumentation inside the app (observability):** the service reports its
+  own request counts and latency, so a failure that leaves the process running
+  is still visible.
+- **Automated scraping and scripted checks (automation):** Prometheus collects
+  metrics every 5 seconds without manual steps, and each step is verified by a
+  script.
+- **Bounded labels (sustainable monitoring):** only `endpoint` and `status`,
+  so the number of series and the cost of queries stay predictable as traffic
+  grows.
+- **Prometheus:** collection and querying in one free tool. Because it pulls
+  metrics, it also records through `up` when a target stops answering.
+- **Scripted failure injection:** the incident can be rehearsed safely and
+  repeated exactly, so diagnosis can be practiced before it is needed in
+  production.
+
+## When this approach does not fit
+
+- **Finding the root cause:** the metrics show which endpoint fails, not why.
+  Logs and traces answer that.
+- **Very low traffic or batch jobs:** with few requests the ratio jumps between
+  0 and 100%. Absolute error counts or the time of the last success are more
+  reliable signals.
+- **Questions about one request or one user:** that detail belongs in logs or
+  traces. Adding user IDs as labels would multiply the number of series.
+- **Failures along a dimension you did not label:** if errors depend on
+  something like region or customer, grouping by `endpoint` cannot localize
+  them.
+- **Very short incidents:** a failure shorter than the scrape interval and
+  query window can be averaged away.
+
 ## Where this approach is useful
 
 This approach helps spot service-wide and endpoint-specific error spikes and
